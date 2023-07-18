@@ -18,7 +18,8 @@ Some slices may be missing from a complete 3D volume. From the Technical Report:
 Also:
 
 >*"Partial slices are included in the 42-bit “raw” images that were eliminated from the “processed” 24-bit images due to their having little anatomic content or because the tissue was permeated with the blue gelatin. These partial slices can be attributed to the opposing cut surfaces of the second and third blocks’ not being perfectly parallel, or from the inferior surfaces of the second through fourth blocks’ not being perfectly flat. Other losses include actual loss of tissue during the cutting of the last few slices of a block."*.
->However, in the 70mm digitized film data some slices fail to convert since are actually zero length in the source, rather than being replacement slices.
+
+However, in the 70mm digitized film data some slices fail to convert since are actually zero length in the source, rather than being replacement slices.
 
 Some radiological (plain projection X-Ray) images of the Male are present in the original data, but since the format of these is not specified in the technical report and does not seem straightforward to reverse engineer, the images in the Male-Images/radiological/xray14 and xray8 folders have not been converted.
 
