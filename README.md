@@ -332,5 +332,53 @@ find vhm-data/src-decompressed/data.lhncbc.nlm.nih.gov/public/Visible-Human/Fema
 
 [libtiff-tools](http://www.libtiff.org/index.html) - needed for tifftopnm (`apt-get install libtiff-tools`)
 
+# Compression Considerations
 
+For the initial conversion, the original uncompressed color cryosection images have been converted with no changes to their pixel data. This results in relatively large files.
+
+It is obviously possible to reversibly (mathematically losslessly) convert these to any suitable standard DICOM Transfer Syntax, should the balance of complexity and conversion time weight favorably against the storage and transmission time impact.
+
+In general, when lossless compression is performed, the SOP Instance UIDs are not changed, since the Transfer Syntax is considered a characteristic of the transmission not the archived format. 
+
+To perform such compression on the complete set of full body Male and Female digital and digitized 70mm film images, using reversible JPEG 2000, the following examples are provided:
+
+```
+java -cp ./pixelmed.jar:./jai_imageio.jar -Djava.awt.headless=true \
+	com.pixelmed.apps.CompressDicomFiles \
+	vhm-data/dst/Visible-Human/Male-Images/Fullcolor/fullbody \
+	vhm-data/dst-J2krev/Visible-Human/Male-Images/Fullcolor/fullbody \
+	jpeg2000
+```
+
+```
+java -cp ./pixelmed.jar:./jai_imageio.jar -Djava.awt.headless=true \
+	com.pixelmed.apps.CompressDicomFiles \
+	vhm-data/dst/Visible-Human/Male-Images/70mm/fullbody \
+	vhm-data/dst-J2krev/Visible-Human/Male-Images/70mm/fullbody \
+	jpeg2000
+```
+
+```
+java -cp ./pixelmed.jar:./jai_imageio.jar -Djava.awt.headless=true \
+	com.pixelmed.apps.CompressDicomFiles \
+	vhm-data/dst/Visible-Human/Female-Images/Fullcolor/fullbody \
+	vhm-data/dst-J2krev/Visible-Human/Female-Images/Fullcolor/fullbody \
+	jpeg2000
+```
+
+```
+java -cp ./pixelmed.jar:./jai_imageio.jar -Djava.awt.headless=true \
+	com.pixelmed.apps.CompressDicomFiles \
+	vhm-data/dst/Visible-Human/Female-Images/70mm/4K_Tiff-Images \
+	vhm-data/dst-J2krev/Visible-Human/Female-Images/70mm/4K_Tiff-Images \
+	jpeg2000
+```
+
+The resulting reduction in file size is modest (2:1 or so), as is expected, and inline with early investigation into compression described in:
+
+Thoma GR, Rodney Long L. Compressing and Transmitting Visible Human Images. IEEE MultiMedia. 1997 Apr 1;4(2):36–45. [doi:10.1109/93.591160](http://dx.doi.org/10.1109/93.591160)
+
+which achieved similar results using the JPEG lossless compression scheme.
+
+That paper notes that the background surrounding the body is irrelevant, and if removed (set to a fixed value) results in significantly better compression, a form of "region of interest" compression. Lossy compression methods are obviously applicable if sufficient fidelity can be preserved for the use case.
 
